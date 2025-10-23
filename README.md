@@ -18,10 +18,13 @@ This project utilizes Retrieval-Augmented Generation (RAG) with Weaviate and Coh
 * **Web Interface:** Simple Flask-based web UI for easy interaction.
 
 <img width="1483" height="821" alt="Screenshot 2025-10-23 at 10 47 11 PM" src="https://github.com/user-attachments/assets/839b2b58-fcb1-441c-a2fb-4d1c12787d94" />
-<img width="1466" height="814" alt="Screenshot 2025-10-23 at 10 47 45 PM" src="https://github.com/user-attachments/assets/a845727b-669d-4dcc-b82f-f4508cba30fc" />
-<img width="1405" height="839" alt="Screenshot 2025-10-23 at 10 48 00 PM" src="https://github.com/user-attachments/assets/32267fd6-63c1-4a97-96cb-5a9e49cbf103" />
-<img width="1190" height="824" alt="Screenshot 2025-10-23 at 10 48 28 PM" src="https://github.com/user-attachments/assets/49389e53-cd65-498f-a958-3e0d84ea334b" />
-<img width="1384" height="742" alt="Screenshot 2025-10-23 at 10 49 14 PM" src="https://github.com/user-attachments/assets/cd7d2c00-75fb-4c16-a608-9b1d39e7b5dc" />
+<img width="1502" height="834" alt="Screenshot 2025-10-23 at 10 53 20 PM" src="https://github.com/user-attachments/assets/da2bc096-9b27-4432-9bbc-b8f6a7961356" />
+<img width="1510" height="812" alt="Screenshot 2025-10-23 at 10 52 23 PM" src="https://github.com/user-attachments/assets/2a80917b-9316-4f17-8f08-f26f67ec8d5f" />
+<img width="1502" height="718" alt="Screenshot 2025-10-23 at 10 54 09 PM" src="https://github.com/user-attachments/assets/9e234104-3cf1-4ede-900d-694e7898f750" />
+<img width="1512" height="540" alt="Screenshot 2025-10-23 at 10 54 35 PM" src="https://github.com/user-attachments/assets/bb7b2426-d2ba-4275-938c-da84e8e5ed54" />
+
+
+
 
 ## 🛠️ Tech Stack
 
