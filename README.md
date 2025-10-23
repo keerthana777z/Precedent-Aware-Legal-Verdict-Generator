@@ -121,7 +121,7 @@ Follow these steps in order:
         ```
     * The script should automatically open your default web browser to `http://127.0.0.1:5001` (or the port specified in `app.py`). If not, navigate there manually.
 
-## ใช้งาน (Usage)
+## Usage
 
 1.  Once the web application is running and loaded in your browser:
 2.  Enter the details of an FIR or a case summary into the text area.
