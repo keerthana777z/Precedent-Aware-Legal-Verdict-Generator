@@ -1,4 +1,4 @@
-# ⚖️ Precedent-Aware Legal Verdict Generator
+# ⚖️ Precedent-Aware Legal Verdict Generator 
 
 > AI-Powered Legal Decision Support for the Indian Context. Analyze Indian cases instantly: AI delivers crime classification, IPC mapping, and precedent-aware verdict recommendations, specifically calibrated for local legal frameworks.
 
