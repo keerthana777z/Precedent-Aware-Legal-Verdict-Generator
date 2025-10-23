@@ -1,0 +1,405 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Precedent-Aware Legal Verdict Generator</title>
+    <style>
+        /* Import a suitable font */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+        /* Reset and Basic Styles */
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa; /* Light background */
+            color: #343a40; /* Default text color */
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        section {
+            padding: 60px 0;
+        }
+        h1, h2, h3, h4 { /* Added h4 */
+            margin-top: 0;
+        }
+        .text-center {
+            text-align: center;
+        }
+
+        /* Hero Section */
+        .hero {
+            background-color: #1a2a44; /* Dark blue */
+            color: #ffffff;
+            padding: 80px 0;
+            text-align: center;
+        }
+        .hero h1 {
+            font-size: 3em;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+        .hero p {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+            color: #adb5bd; /* Lighter text */
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        /* Hero Section Icon */
+        .hero-icon {
+             font-size: 2em;
+             margin-bottom: 10px;
+             display: block;
+             margin-left: auto;
+             margin-right: auto;
+             color: #3498db; /* Consistent icon color */
+         }
+
+        /* Input/Output Section */
+        .input-output-section {
+            display: flex;
+            gap: 30px;
+            background-color: #ffffff; /* White background for this section */
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            margin-top: -40px; /* Overlap hero slightly */
+            position: relative; /* Needed for overlap */
+            z-index: 10;
+        }
+        .input-column, .output-column {
+            flex: 1; /* Each column takes half the space */
+            padding: 20px;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            background-color: #fff; /* Ensure white background */
+        }
+        .input-column h3, .output-column h3 {
+             margin-bottom: 20px;
+             color: #495057;
+             font-weight: 600;
+             border-bottom: 1px solid #e9ecef;
+             padding-bottom: 10px;
+         }
+        .manual-input label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600; /* Made label bolder */
+            color: #495057;
+            font-size: 1.1em; /* Slightly larger label */
+        }
+        textarea#query-input {
+            width: 100%;
+            min-height: 250px; /* Increased height */
+            box-sizing: border-box;
+            padding: 12px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            font-size: 0.95em;
+            resize: vertical;
+            margin-bottom: 15px;
+        }
+        button#submit-button {
+            display: block;
+            width: 100%;
+            padding: 12px 20px;
+            background-color: #ffc107; /* Yellow button */
+            color: #343a40;
+            border: none;
+            border-radius: 4px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 10px; /* Added some margin above button */
+        }
+        button#submit-button:hover {
+            background-color: #e0a800; /* Darker yellow */
+        }
+        .output-column .placeholder {
+            text-align: center;
+            color: #6c75bd; /* Adjusted color slightly */
+            padding: 50px 0;
+            height: 100%; /* Try to make placeholder fill height */
+            display: flex; /* Use flexbox for centering */
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+         .output-column .placeholder .icon {
+             font-size: 4em;
+             margin-bottom: 15px;
+             color: #3498db; /* Consistent icon color */
+         }
+
+        /* --- Styles for Verdict Boxes --- */
+        #answer-section { display: none; /* Initially hidden */ }
+        .verdict-box {
+            background-color: #f8f9fa; /* Light grey background for box */
+            border: 1px solid #e9ecef; /* Subtle border */
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 15px; /* Space between boxes */
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05); /* Very subtle shadow */
+        }
+        .verdict-box h4 { /* Style the heading within the box */
+            margin-top: 0;
+            margin-bottom: 10px;
+            color: #34495e; /* Darker heading color */
+            font-size: 1.1em;
+            font-weight: 600;
+            border-bottom: 1px solid #dee2e6; /* Underline heading */
+            padding-bottom: 5px;
+        }
+        .verdict-box p { /* Style the content within the box */
+            margin-bottom: 0; /* Remove default paragraph margin */
+            color: #495057;
+        }
+        /* --- End Verdict Box Styles --- */
+
+        /* References Section */
+        #references {
+             margin-top: 20px;
+             padding-top: 10px;
+             border-top: 1px dashed #ccc;
+             font-size: 0.9em;
+             color: #6c75bd; /* Adjusted color */
+         }
+        #references strong {
+            color: #495057;
+            display: block; /* Make labels block */
+            margin-bottom: 3px;
+        }
+        #reference-list div, #precedent-reference-list { /* Style list items */
+             margin-left: 15px;
+             margin-bottom: 5px;
+             font-size: 0.9em; /* Smaller font for references */
+             color: #7f8c8d; /* Grey */
+         }
+
+        #loading { display: none; text-align: center; color: #0d6efd; margin-top: 15px; font-style: italic; }
+
+        /* Features & Benefits Section */
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 2em;
+            color: #2c3e50;
+        }
+        .section-subtitle {
+             text-align: center;
+             margin-bottom: 50px;
+             color: #6c75bd; /* Adjusted color */
+             font-size: 1.1em;
+             max-width: 600px;
+             margin-left: auto;
+             margin-right: auto;
+         }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Responsive grid */
+            gap: 30px;
+        }
+        .card {
+            background-color: #ffffff;
+            padding: 25px;
+            border-radius: 6px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+            border: 1px solid #e9ecef;
+            text-align: center; /* Center card content */
+        }
+        /* Features & Benefits Card Icons */
+        .card .icon {
+             font-size: 2.5em;
+             margin-bottom: 15px;
+             color: #3498db; /* Consistent icon color */
+         }
+        .card h3 {
+            font-size: 1.3em;
+            margin-bottom: 10px;
+            color: #34495e;
+            font-weight: 600;
+        }
+        .card p {
+            font-size: 0.95em;
+            color: #6c75bd; /* Adjusted color */
+        }
+    </style>
+</head>
+<body>
+
+    <section class="hero">
+        <div class="container">
+            <span class="hero-icon">⚖️</span>
+            <h1>Precedent-Aware Legal Verdict Generator</h1>
+            <p>AI-Powered Crime Analysis for India: Instant IPC Mapping & Precedent-Aware Verdicts.</p>
+        </div>
+    </section>
+
+    <div class="container input-output-container">
+        <div class="input-output-section">
+            <div class="input-column">
+                <div class="manual-input">
+                    <label for="query-input">Enter Case Details</label>
+                    <form id="query-form">
+                        <textarea id="query-input" name="query" placeholder="Enter FIR details or case summary here..." required></textarea>
+                        <button id="submit-button" type="submit">Generate Verdict</button>
+                    </form>
+                    <div id="loading">Processing...</div>
+                </div>
+            </div>
+            <div class="output-column">
+                 <div id="output-placeholder" class="placeholder">
+                     <div class="icon">⚖️</div>
+                     <h3>No Verdict Generated Yet</h3>
+                     <p>Enter case details to begin analysis</p>
+                 </div>
+                <div id="answer-section">
+                    <h3>Verdict / Analysis</h3>
+                    <div id="answer-text"></div>
+                    <div id="references">
+                        <strong>IPC References:</strong>
+                        <div id="reference-list" style="font-size: 0.85em; margin-left: 10px;">N/A</div> <br>
+                        <strong>Precedent References:</strong>
+                        <div id="precedent-reference-list" style="font-size: 0.85em; margin-left: 10px;">N/A</div> </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+  
+
+    <section class="benefits" style="background-color: #fff;">
+        <div class="container">
+            <h2 class="section-title">Who Can Benefit</h2>
+            <div class="grid">
+                <div class="card"> <div class="icon">🧑‍⚖️</div> <h3>For Judges</h3> <p>Assist in decision-making with AI-powered analysis of case facts, relevant precedents, and suggested verdicts based on similar historical cases.</p> </div>
+                <div class="card"> <div class="icon">🧑‍💼</div> <h3>For Lawyers</h3> <p>Research tool for building stronger cases by understanding potential outcomes, relevant IPC sections, and precedent-based arguments.</p> </div>
+                <div class="card"> <div class="icon">💡</div> <h3>For Law Students</h3> <p>Educational platform to understand legal reasoning, case analysis, and the practical application of IPC sections in real-world scenarios.</p> </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        const form = document.getElementById('query-form');
+        const queryInput = document.getElementById('query-input');
+        const answerSection = document.getElementById('answer-section');
+        const answerTextDiv = document.getElementById('answer-text');
+        const referenceListDiv = document.getElementById('reference-list'); // Changed variable name
+        const precedentReferenceListDiv = document.getElementById('precedent-reference-list'); // Changed variable name
+        const loadingIndicator = document.getElementById('loading');
+        const outputPlaceholder = document.getElementById('output-placeholder');
+
+        // --- UPDATED: Function to format answer into boxes ---
+        function formatAnswer(text) {
+            let htmlContent = '';
+            // Split the text by the markdown bold headings (like **Heading:**)
+            const sections = text.split(/(\*\*.+?:\*\*)/).filter(Boolean);
+
+            if (sections.length <= 1 && !text.startsWith('**')) {
+                // If no headings found, treat the whole thing as one block
+                 htmlContent = `<div class="verdict-box"><p>${text.replace(/\n/g, '<br>')}</p></div>`;
+            } else {
+                 // Process in pairs: Heading, Content
+                 for (let i = 0; i < sections.length; i += 2) {
+                     let headingClean = '';
+                     let content = '';
+
+                     if (sections[i].startsWith('**') && sections[i].endsWith(':**')) {
+                        // This item is a heading
+                        headingRaw = sections[i].trim();
+                        headingClean = headingRaw.replace(/\*\*/g, '').replace(/:$/, '');
+                        // The next item is the content
+                        if (i + 1 < sections.length) {
+                             content = sections[i + 1].trim().replace(/\n/g, '<br>');
+                        }
+                     } else {
+                         // This item is content without a preceding heading (e.g., introduction)
+                         content = sections[i].trim().replace(/\n/g, '<br>');
+                         // Increment i by 1 instead of 2 for the next loop iteration
+                         i--; // Adjust index because we only consumed one item
+                     }
+
+                     if (headingClean && content) {
+                        htmlContent += `
+                            <div class="verdict-box">
+                                <h4>${headingClean}</h4>
+                                <p>${content}</p>
+                            </div>`;
+                     } else if (content) { // Content without a specific heading for this block
+                         htmlContent += `<div class="verdict-box"><p>${content}</p></div>`;
+                     }
+                 }
+            }
+            // Fallback if splitting completely failed
+            if (!htmlContent && text) {
+                 htmlContent = `<div class="verdict-box"><p>${text.replace(/\n/g, '<br>')}</p></div>`;
+            }
+            return htmlContent;
+        }
+        // --- End Updated Function ---
+
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const userQuery = queryInput.value.trim();
+            if (!userQuery) return;
+
+            loadingIndicator.style.display = 'block';
+            answerSection.style.display = 'none';
+            outputPlaceholder.style.display = 'none';
+            answerTextDiv.innerHTML = '';
+            referenceListDiv.innerHTML = 'N/A'; // Use innerHTML for consistency
+            precedentReferenceListDiv.innerHTML = 'N/A'; // Use innerHTML
+
+            try {
+                const response = await fetch('/query', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ query: userQuery }),
+                });
+
+                // Get JSON regardless of ok status to potentially show API errors
+                const data = await response.json();
+
+                if (!response.ok) {
+                     // Throw error using message from API if available
+                    throw new Error(data.answer || data.error || `HTTP error! status: ${response.status}`);
+                }
+
+                const rawAnswer = data.answer || 'No answer received.';
+
+                // Format and display the answer using innerHTML
+                answerTextDiv.innerHTML = formatAnswer(rawAnswer);
+
+                // Display references
+                if (data.references && data.references.length > 0) {
+                     referenceListDiv.innerHTML = data.references.map(ref => `<div>- ${ref}</div>`).join('');
+                } else {
+                     referenceListDiv.innerHTML = '<div>N/A</div>';
+                }
+                if (data.precedent_references && data.precedent_references.length > 0) {
+                     precedentReferenceListDiv.innerHTML = data.precedent_references.map(ref => `<div>- ${ref}</div>`).join('');
+                } else {
+                     precedentReferenceListDiv.innerHTML = '<div>N/A</div>';
+                }
+
+                answerSection.style.display = 'block';
+
+            } catch (error) {
+                console.error('Error fetching verdict:', error);
+                answerTextDiv.innerHTML = `<div class="verdict-box"><p>⚠️ Error: Could not get verdict. ${error.message}</p></div>`;
+                answerSection.style.display = 'block';
+            } finally {
+                loadingIndicator.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>

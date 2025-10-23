@@ -1,0 +1,18 @@
+# Environment variables
+.env
+
+# Python cache and virtual environment files
+__pycache__/
+*.pyc
+venv/
+env/
+*.env
+
+# Weaviate data volume
+weaviate_data/
+
+# macOS specific files
+.DS_Store
+
+# IDE specific files (VS Code example)
+.vscode/
